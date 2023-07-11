@@ -29,4 +29,4 @@ Dataset: https://learn.microsoft.com/en-us/sql/samples/adventureworks-install-co
 
 Data Update code: https://github.com/techtalkcorner/SampleDemoFiles/blob/master/Database/AdventureWorks/Update_AdventureWorksDW_Data.sql
 
-![image](https://github.com/LauraFlorio/AdventureWorks-Python-SQL-Streamlit/blob/main/Demo.gif)
+![image](https://github.com/LauraFlorio/AdventureWorks-Python-SQL-Streamlit/blob/main/Result.gif)
