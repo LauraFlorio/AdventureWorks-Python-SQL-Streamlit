@@ -8,19 +8,22 @@ st.set_page_config(page_title="Sales Dashboard",
                    layout="wide")
 
 st_style = """
-                <style>
-                #MainMenu {visibility: hidden;}
-                footer {visibility: hidden;}
-                header {visibility: hidden;}
-                </style>
-                """
-st.markdown(st_style, unsafe_allow_html=True)
+           <style>
+           #MainMenu {visibility: hidden;}
+           footer {visibility: hidden;}
+           header {visibility: hidden;}
+           div.block-container {padding-top:1rem;}
+           .css-ysnqb2 e1g8pov64 {margin-top: -75px;}
+           </style>
+           """
 
+st.markdown(st_style, unsafe_allow_html=True)
 # ---- connection with the database ----
 
 import pandas as pd
 import sqlalchemy as sa
 import urllib.parse
+
 
 @st.cache_data
 def db_conn():
@@ -75,7 +78,7 @@ categories = df["EnglishProductCategoryName"].unique().tolist()
 # emojis: https://www.webfx.com/tools/emoji-cheat-sheet/
 
 # ---- SIDEBAR ----
-st.sidebar.header("Please Filter Here:")
+st.sidebar.header("Filtering")
 
 year = st.sidebar.multiselect(
     "Select the year",
@@ -188,11 +191,13 @@ fig_chart1.update_traces(textposition="outside", marker_line_color='#00172B', ma
 
 # ---- TOTAL OF SALES BY MONTH ----
 
-chart2 = df_selection.groupby("Month").sum()[["OrderQuantity"]]
+chart2 = df_selection.groupby("Month", as_index=False).sum()[["Month", "OrderQuantity"]]
+chart2["Month"]=pd.Categorical(chart2["Month"],["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"])
+chart2.sort_values("Month", inplace=True, ascending=False)
 fig_chart2 = px.bar(
     chart2,
     x=["OrderQuantity"],
-    y=chart2.index,
+    y=chart2.Month,
     title="<b>TOTAL OF SALES BY MONTH</b>",
     template="plotly_white",
     orientation="h",
@@ -273,5 +278,3 @@ with left_column:
     left_column1.plotly_chart(fig_chart3, use_container_width=True)
     right_column1.plotly_chart(fig_chart4, use_container_width=True)
 right_column.plotly_chart(fig_chart2, use_container_width=True)
-
-st.dataframe(df_selection_category)
